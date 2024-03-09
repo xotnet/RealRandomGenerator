@@ -8,7 +8,7 @@
 **Example usage:** 
 ```
 #include <iostream>
-#include <realRandomGenerator.hpp>
+#include "realRandomGenerator.hpp"
 
 int main() {
   std::cout << "Random generated digit: " << generateRealRandomInt(1, 100);
