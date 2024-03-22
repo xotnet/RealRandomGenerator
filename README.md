@@ -1,7 +1,7 @@
 # RealRandomGenerator
 **This C++ lib help to easy generate random integer based on system random and time**
 
-**You call this lib using:** **```generateRealRandomInt(Minimum, Maximum)```**
+**You call this lib using:** **```generateRealRandomInt<type>(Minimum, Maximum)```**
 
 
 
@@ -11,7 +11,7 @@
 #include "realRandomGenerator.hpp"
 
 int main() {
-  std::cout << "Random generated digit: " << generateRealRandomInt(1, 100);
+  std::cout << "Random generated digit: " << generateRealRandomInt<int>(1, 100);
 }
 ```
 
