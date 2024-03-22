@@ -1,25 +1,46 @@
 // Real random C++ generator for windows and linux
-#include <iostream>
-#include <ctime>
-long long int genFY(long long int from, long long int upto) {
-	int gen = 1;
-	int* getPtr = &gen; // random based on system virtual memory allocate
-	long long int generator1 = reinterpret_cast<long long int>(getPtr);
-	long long int result = 0;
-	std::string resStr = std::to_string(generator1);
-	char x = resStr[resStr[0]];
-	if (x-'0' < 5 && (x-'0')%2==0) {
-		generator1++;
+#include <string>
+#include <thread>
+#include "BigInt.hpp"
+
+int pid = 0;
+
+std::string readPiece(std::string inputString, int start, int end = -1) {
+	if (end == -1) {end = inputString.length();}
+	std::string result="";
+	for (int i = start; i<end; i++) {
+		result = result + inputString[i];
 	}
-	if (upto == 1) {result = generator1 % (upto+1);}
-	else {result = generator1 % upto;}
-	return std::abs(result);
+	return result;
 }
 
-long long int generateRealRandomInt(long long int from, long long int upto) { // generateRealRandomInt(minimum, maximum);
-	long long int result = from-1;
-	while (result < from) {
-		result = genFY(from,upto);
+void genThread() {
+	std::thread::id threadId = std::this_thread::get_id();
+	std::hash<std::thread::id> hasher;
+	pid = hasher(threadId);
+}
+
+template <typename T>
+std::string generateRealRandomInt(T from, T upto) { // generateRealRandomInt(minimum, maximum);
+	std::string result = "";
+	
+	std::string buf="";
+	long long int* generatorOne = new long long int;
+	long long int randomIntOne = reinterpret_cast<long long int>(generatorOne);
+	buf = std::to_string(randomIntOne);
+	int i = 1;
+	long long int cf = randomIntOne%8128;
+	while (buf.length() < upto) {
+		void* generator = malloc(cf*i*21);
+		buf += std::to_string(reinterpret_cast<long long int>(&generator));
+		i++;
 	}
-	return std::abs(result);
+	buf = readPiece(buf, from, upto);
+	BigInt bigCalc = buf + 1;
+	std::thread t(genThread);
+	t.join();
+	bigCalc = bigCalc * pid % (upto+1);
+	if (bigCalc < 0) {bigCalc = bigCalc * -1;}
+	result = bigCalc.to_string();
+	return result;
 }
