@@ -36,10 +36,11 @@ std::string generateRealRandomInt(T from, T upto) { // generateRealRandomInt(min
 		i++;
 	}
 	buf = readPiece(buf, from, upto);
-	BigInt bigCalc = buf + 1;
+	BigInt bigCalc = std::string(buf);
 	std::thread t(genThread);
 	t.join();
-	bigCalc = bigCalc * pid % (upto+1);
+	BigInt prime = bigCalc + pid;
+	bigCalc = prime % (upto+1);
 	if (bigCalc < 0) {bigCalc = bigCalc * -1;}
 	result = bigCalc.to_string();
 	return result;
