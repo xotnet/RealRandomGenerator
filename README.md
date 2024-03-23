@@ -1,4 +1,9 @@
 # RealRandomGenerator
+
+> [!WARNING]
+> Unsafe implementation of random, but it's not time-based!
+> Please don't use this until **Release 2.0** comes out
+
 **This C++ lib help to easy generate random integer based on system random and time**
 
 **You call this lib using:** **```generateRealRandomInt<type>(Minimum, Maximum)```**
